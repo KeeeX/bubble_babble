@@ -43,10 +43,8 @@
   "devDependencies": {
     "eslint": "^6.7.1",
     "esm": "^3.2.25",
+    "mocha": "^6.2.2",
     "nyc": "^14.1.1",
     "should": "~3.1.0"
-  },
-  "dependencies": {
-    "mocha": "^6.2.2"
   }
 }
