@@ -26,17 +26,20 @@ const test_vectors = [
   }
 ];
 
+const str2abUTF8 = str => new TextEncoder().encode(str).buffer;
+const ab2strUTF8 = ab => new TextDecoder().decode(new Uint8Array(ab));
+
 describe("BubbleBabble", () => {
   describe("#encode()", () => {
     it("should encode a buffer", () =>
       test_vectors.forEach(test =>
-        encode(Buffer.from(test.ascii)).should.equal(test.encoding)
+        encode(str2abUTF8(test.ascii)).should.equal(test.encoding)
       )
     );
 
     it("should encode a string", () =>
       test_vectors.forEach(test =>
-        encode(test.ascii, "ascii").should.equal(test.encoding)
+        encode(test.ascii).should.equal(test.encoding)
       )
     );
 
@@ -58,9 +61,9 @@ describe("BubbleBabble", () => {
     it("should decode a string and return a buffer", () => {
       test_vectors.forEach(test => {
         var decoded = decode(test.encoding);
-        Buffer.isBuffer(decoded).should.be.true;
+        decoded.should.be.an.instanceOf(ArrayBuffer);
 
-        decoded.toString().should.equal(test.ascii);
+        ab2strUTF8(decoded).should.equal(test.ascii);
       });
     });
 
@@ -73,15 +76,30 @@ describe("BubbleBabble", () => {
     it("should be inverse of encoding a string", () => {
       const ascii_input = "Inverse of each other.";
 
-      decode(
+      ab2strUTF8(decode(
         encode(ascii_input)
-      ).toString().should.equal(ascii_input);
+      )).should.equal(ascii_input);
     });
 
-    it("should be inverse of encoding a buffer", () => {
-      const input = Buffer.from("ffffffff","hex");
+    it("should accept Uint8Array", () => {
+      const input = Uint8Array.from([34, 63, 42, 0, 255]);
+      const decoded = decode(encode(input));
+      input.length.should.equal(decoded.byteLength);
+      const decodedBytes = new Uint8Array(decoded);
+      for (let i = 0; i < decodedBytes.length; ++i) {
+        decodedBytes[i].should.equal(input[i]);
+      }
+    });
 
-      decode(encode(input)).equals(input).should.be.true;
+    it("should be inverse of encoding an ArrayBuffer", () => {
+      const input = Uint8Array.from([255, 255, 255, 255]).buffer;
+
+      const decoded = decode(encode(input));
+      input.byteLength.should.equal(decoded.byteLength);
+      const decodedBytes = new Uint8Array(decoded);
+      for (let i = 0; i < decodedBytes.length; ++i) {
+        decodedBytes[i].should.equal(255);
+      }
     });
   });
 });
