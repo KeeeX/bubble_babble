@@ -28,3 +28,7 @@ console.log(encoded); // "xigak-nyryk-humil-bosek-sonax"
 const ascii = decode("xesef-disof-gytuf-katof-movif-baxux");
 console.log(ascii); // "1234567890"
 ```
+
+Typescript
+----------
+This module includes type definition for usage with TypeScript
