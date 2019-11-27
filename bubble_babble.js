@@ -1,17 +1,20 @@
 /*eslint-env node */
-var vowels = "aeiouy";
-var consonants = "bcdfghklmnprstvzx";
+const vowels = "aeiouy";
+const consonants = "bcdfghklmnprstvzx";
 
-var encode = function(input, encoding) {
+export const encode = (input, encoding) => {
   if (!Buffer.isBuffer(input)) {
     input = Buffer.from(input, encoding);
   }
 
-  var result = "x",
-    checksum = 1,
-    len = input.length,
-    byte1, byte2,
-    d, e, i;
+  let result = "x";
+  let checksum = 1;
+  let len = input.length;
+  let byte1;
+  let byte2;
+  let d;
+  let e;
+  let i;
 
   // create full tuples
   for (i = 0; i + 1 < len; i += 2) {
@@ -39,7 +42,7 @@ var encode = function(input, encoding) {
   return result;
 };
 
-var odd_partial = function(raw_byte, checksum) {
+const odd_partial = (raw_byte, checksum) => {
   var a = (((raw_byte >> 6) & 3) + checksum) % 6,
     b = (raw_byte >> 2) & 15,
     c = ((raw_byte & 3) + Math.floor(checksum / 6)) % 6;
@@ -47,7 +50,7 @@ var odd_partial = function(raw_byte, checksum) {
   return vowels.charAt(a) + consonants.charAt(b) + vowels.charAt(c);
 };
 
-var even_partial = function(checksum) {
+const even_partial = checksum => {
   var a = checksum % 6,
     b = 16,
     c = Math.floor(checksum / 6);
@@ -55,7 +58,7 @@ var even_partial = function(checksum) {
   return vowels.charAt(a) + consonants.charAt(b) + vowels.charAt(c);
 };
 
-var decode = function(input) {
+export const decode = input => {
   if (input.substr(0, 1) !== "x" ||
       input.substr(-1, 1) !== "x") {
     throw new Error("Corrupt string");
@@ -96,17 +99,15 @@ var decode = function(input) {
   return Buffer.from(char_codes);
 };
 
-var decode_tuple = function(ascii_tuple) {
-  return [
-    vowels.indexOf(ascii_tuple[0]),
-    consonants.indexOf(ascii_tuple[1]),
-    vowels.indexOf(ascii_tuple[2]),
-    consonants.indexOf(ascii_tuple[3]),
-    consonants.indexOf(ascii_tuple[5]),
-  ];
-};
+const decode_tuple = ascii_tuple => ([
+  vowels.indexOf(ascii_tuple[0]),
+  consonants.indexOf(ascii_tuple[1]),
+  vowels.indexOf(ascii_tuple[2]),
+  consonants.indexOf(ascii_tuple[3]),
+  consonants.indexOf(ascii_tuple[5]),
+]);
 
-var decode_3part_byte = function(a, b, c, checksum) {
+const decode_3part_byte = (a, b, c, checksum) => {
   var high = (a - (checksum % 6) + 6) % 6,
     mid = b,
     low = (c - (Math.floor(checksum / 6) % 6) + 6) % 6;
@@ -118,15 +119,7 @@ var decode_3part_byte = function(a, b, c, checksum) {
   return (high << 6) | (mid << 2) | low;
 };
 
-var decode_2part_byte = function(d, e) {
-  return (d << 4) | e;
-};
+const decode_2part_byte = (d, e) => (d << 4) | e;
 
-var next_checksum = function(checksum, byte1, byte2) {
-  return ((checksum * 5) + (byte1 * 7) + byte2) % 36;
-};
-
-module.exports = {
-  encode: encode,
-  decode: decode
-};
+const next_checksum = (checksum, byte1, byte2) =>
+  ((checksum * 5) + (byte1 * 7) + byte2) % 36;

@@ -20,11 +20,11 @@ npm install https://github.com/KeeeX/bubble_babble.git
 -----
 
 ```JavaScript
-const bubble = require("bubble_babble");
+import {encode, decode} from "@keeex/bubble_babble";
 
-const encoded = bubble.encode("Pineapple");
+const encoded = encode("Pineapple");
 console.log(encoded); // "xigak-nyryk-humil-bosek-sonax"
 
-const ascii = bubble.decode("xesef-disof-gytuf-katof-movif-baxux");
+const ascii = decode("xesef-disof-gytuf-katof-movif-baxux");
 console.log(ascii); // "1234567890"
 ```
