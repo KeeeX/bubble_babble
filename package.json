@@ -1,5 +1,5 @@
 {
-  "name": "bubble_babble",
+  "name": "@keeex/bubble_babble",
   "version": "0.2.0",
   "description": "Bubble Babble encoding",
   "main": "bubble_babble.js",
@@ -8,22 +8,30 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/miningold/bubble_babble.git"
+    "url": "git://github.com:KeeeX/bubble_babble.git"
   },
   "keywords": [
     "bubble",
     "babble",
     "encode",
-    "encrypt",
-    "ssh"
+    "encrypt"
   ],
   "author": "Tylor Reynolds",
   "license": "MIT",
+  "contributors": [
+    {
+      "name": "Gabriel Paul \"Cley Faye\" Risterucci",
+      "email": "gabriel@keeex.net"
+    }
+  ],
   "bugs": {
-    "url": "https://github.com/miningold/bubble_babble/issues"
+    "url": "https://github.com/KeeeX/bubble_babble/issues"
   },
-  "homepage": "https://github.com/miningold/bubble_babble",
+  "homepage": "https://github.com/KeeeX/bubble_babble",
   "devDependencies": {
     "should": "~3.1.0"
+  },
+  "dependencies": {
+    "mocha": "^6.2.2"
   }
 }

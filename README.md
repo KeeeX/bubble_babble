@@ -3,20 +3,28 @@ bubble_babble
 
 Bubble Babble encoding for nodejs.
 
-**Install**
+Initially forked from tylorr/bubble\_babble to avoid the dependency on `Buffer`.
 
-```
-npm install bubble_babble
+
+**Install**
+-------
+
+The built package is not published on any repository; either install the
+original package, or install from github:
+
+```bash
+npm install https://github.com/KeeeX/bubble_babble.git
 ```
 
 **Usage**
+-----
 
-```
-var bubble = require('bubble_babble');
+```JavaScript
+const bubble = require("bubble_babble");
 
-var encoded = bubble.encode('Pineapple');
-console.log(encoded); // 'xigak-nyryk-humil-bosek-sonax'
+const encoded = bubble.encode("Pineapple");
+console.log(encoded); // "xigak-nyryk-humil-bosek-sonax"
 
-var ascii = bubble.decode('xesef-disof-gytuf-katof-movif-baxux');
-console.log(ascii); // '1234567890'
+const ascii = bubble.decode("xesef-disof-gytuf-katof-movif-baxux");
+console.log(ascii); // "1234567890"
 ```
