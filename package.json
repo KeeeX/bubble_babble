@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/KeeeX/bubble_babble",
   "devDependencies": {
+    "eslint": "^6.7.1",
     "should": "~3.1.0"
   },
   "dependencies": {
