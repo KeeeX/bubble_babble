@@ -1,6 +1,6 @@
 /*eslint-env node, mocha */
 import "should";
-import {encode, decode} from "..";
+import {encode, decode} from "../bubble_babble.js";
 
 const random_int = (min, max) => Math.floor(
   Math.random() * (max - min + 1) + min

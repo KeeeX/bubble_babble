@@ -24,17 +24,18 @@
       "email": "gabriel@keeex.net"
     }
   ],
+  "type": "module",
   "nyc": {
-    "require": [
-      "esm"
-    ],
     "extension": [
       ".js"
+    ],
+    "include": [
+      "bubble_babble.js"
     ],
     "exclude": [
       "test/**/*"
     ],
-    "cache": true
+    "all": true
   },
   "bugs": {
     "url": "https://github.com/KeeeX/bubble_babble/issues"
@@ -42,7 +43,6 @@
   "homepage": "https://github.com/KeeeX/bubble_babble",
   "devDependencies": {
     "eslint": "^7.27.0",
-    "esm": "^3.2.25",
     "mocha": "^8.4.0",
     "nyc": "^15.1.0",
     "should": "^13.2.3"
