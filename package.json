@@ -41,10 +41,10 @@
   },
   "homepage": "https://github.com/KeeeX/bubble_babble",
   "devDependencies": {
-    "eslint": "^6.7.1",
+    "eslint": "^7.27.0",
     "esm": "^3.2.25",
-    "mocha": "^6.2.2",
-    "nyc": "^14.1.1",
+    "mocha": "^8.4.0",
+    "nyc": "^15.1.0",
     "should": "^13.2.3"
   }
 }
