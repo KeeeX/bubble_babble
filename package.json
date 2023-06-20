@@ -42,7 +42,10 @@
   },
   "homepage": "https://github.com/KeeeX/bubble_babble",
   "devDependencies": {
-    "eslint": "^7.32.0",
+    "@keeex/eslint-config": "^1.11.0",
+    "eslint": "^8.43.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-mocha": "^10.1.0",
     "mocha": "^8.4.0",
     "nyc": "^15.1.0",
     "should": "^13.2.3"
