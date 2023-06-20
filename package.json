@@ -4,7 +4,7 @@
   "description": "Bubble Babble encoding",
   "main": "bubble_babble.js",
   "scripts": {
-    "test": "nyc mocha"
+    "test": "c8 mocha"
   },
   "repository": {
     "type": "git",
@@ -25,29 +25,16 @@
     }
   ],
   "type": "module",
-  "nyc": {
-    "extension": [
-      ".js"
-    ],
-    "include": [
-      "bubble_babble.js"
-    ],
-    "exclude": [
-      "test/**/*"
-    ],
-    "all": true
-  },
   "bugs": {
     "url": "https://github.com/KeeeX/bubble_babble/issues"
   },
   "homepage": "https://github.com/KeeeX/bubble_babble",
   "devDependencies": {
     "@keeex/eslint-config": "^1.11.0",
+    "c8": "^8.0.0",
     "eslint": "^8.43.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-mocha": "^10.1.0",
-    "mocha": "^8.4.0",
-    "nyc": "^15.1.0",
-    "should": "^13.2.3"
+    "mocha": "^8.4.0"
   }
 }
