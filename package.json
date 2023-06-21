@@ -8,7 +8,9 @@
     "build": "tslib build",
     "check": "tslib init && tsc && eslint .",
     "clean": "tslib clean",
-    "prepack": "npm run clean && npm run build",
+    "postpack": "clean-publish restore",
+    "prepack": "npm run clean && npm run build && clean-publish clean",
+    "prepublishOnly": "publish_check.sh",
     "rawtest": "tslib rawtest --inspect --timeout 150000000",
     "test": "tslib test"
   },
@@ -30,6 +32,21 @@
       "email": "gabriel@keeex.net"
     }
   ],
+  "cleanPublish": {
+    "clean": {
+      "package.json": [
+        {
+          "type": "json",
+          "package": true,
+          "remove": "repository"
+        }
+      ],
+      "README.md": {
+        "type": "text",
+        "remove": "https://devtools.keeex.me"
+      }
+    }
+  },
   "type": "module",
   "tslib": {
     "buildWeb": true,
@@ -47,6 +64,7 @@
     "@babel/cli": "^7.22.5",
     "@babel/core": "^7.22.5",
     "@babel/preset-env": "^7.22.5",
+    "@keeex/clean-publish": "^1.0.3",
     "@keeex/eslint-config": "^1.11.0",
     "@keeex/tslib": "^1.12.6",
     "@types/mocha": "^10.0.1",
