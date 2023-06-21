@@ -3,14 +3,15 @@ import {
   SupportedInput,
 } from "./types.js";
 
-const vowels = "aeiouy";
+const vowels = "aeiouy".split("");
 const vowelsCount = vowels.length;
-const usedConsonants = "bcdfghklmnprstv";
+const usedConsonants = "bcdfghklmnprstv".split("");
 const evenConsonant = "z";
 const endsConsonant = "x";
-const consonants = `${usedConsonants}${evenConsonant}${endsConsonant}`;
+const consonants = [...usedConsonants, evenConsonant, endsConsonant];
 // Index of "x" in consonnants
 const endIndex = 16;
+const separator = "-";
 
 /** Get an Uint8Array representation from input */
 const getBuf8FromInput = (input: SupportedInput): Uint8Array => {
@@ -20,21 +21,21 @@ const getBuf8FromInput = (input: SupportedInput): Uint8Array => {
   throw new Error("Unsupported input");
 };
 
-const oddPartial = (rawByte: number, checksum: number): string => {
+const oddPartial = (rawByte: number, checksum: number): Array<string> => {
   /* eslint-disable no-magic-numbers */
   const a = (((rawByte >> 6) & 3) + checksum) % vowelsCount;
   const b = (rawByte >> 2) & 15;
   const c = ((rawByte & 3) + Math.floor(checksum / 6)) % vowelsCount;
   /* eslint-enable no-magic-numbers */
-  return vowels[a] + consonants[b] + vowels[c];
+  return [vowels[a], consonants[b], vowels[c]];
 };
 
-const evenPartial = (checksum: number): string => {
+const evenPartial = (checksum: number): Array<string> => {
   /* eslint-disable no-magic-numbers */
   const a = checksum % vowelsCount;
   const c = Math.floor(checksum / 6);
   /* eslint-enable no-magic-numbers */
-  return vowels[a] + endsConsonant + vowels[c];
+  return [vowels[a], endsConsonant, vowels[c]];
 };
 
 /* eslint-disable no-magic-numbers */
@@ -49,32 +50,32 @@ const nextChecksum = (
 export const encode = (input: SupportedInput): string => {
   const inputBytes = getBuf8FromInput(input);
   const len = inputBytes.length;
-  let result = endsConsonant;
+  let result = [endsConsonant];
   let checksum = 1;
   let i = 0;
   // create full tuples
   while (i + 1 < len) {
     const byte1 = inputBytes[i++];
     const byte2 = inputBytes[i++];
-    result += oddPartial(byte1, checksum);
+    result.push(...oddPartial(byte1, checksum));
 
     /* eslint-disable no-magic-numbers */
     const d = (byte2 >> 4) & 15;
     const e = byte2 & 15;
     /* eslint-enable no-magic-numbers */
 
-    result = `${result}${consonants[d]}-${consonants[e]}`;
+    result.push(consonants[d], separator, consonants[e]);
     checksum = nextChecksum(checksum, byte1, byte2);
   }
   // handle partial tuple
   if (i < len) {
     const byte1 = inputBytes[i];
-    result += oddPartial(byte1, checksum);
+    result.push(...oddPartial(byte1, checksum));
   } else {
-    result += evenPartial(checksum);
+    result.push(...evenPartial(checksum));
   }
-  result += endsConsonant;
-  return result;
+  result.push(endsConsonant);
+  return result.join("");
 };
 
 const decodeTuple = (asciiTuple: string): DecodedTuple => ([
