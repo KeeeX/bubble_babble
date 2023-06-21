@@ -2,9 +2,15 @@
   "name": "@keeex/bubble_babble",
   "version": "2.0.0",
   "description": "Bubble Babble encoding",
-  "main": "bubble_babble.js",
+  "main": "lib/bubble_babble.js",
+  "browser": "web/bubble_babble.js",
   "scripts": {
-    "test": "c8 mocha"
+    "build": "tslib build",
+    "check": "tslib init && tsc && eslint .",
+    "clean": "tslib clean",
+    "prepack": "npm run clean && npm run build",
+    "rawtest": "tslib rawtest --inspect --timeout 150000000",
+    "test": "tslib test"
   },
   "repository": {
     "type": "git",
@@ -25,16 +31,36 @@
     }
   ],
   "type": "module",
+  "tslib": {
+    "buildWeb": true,
+    "typedoc": {
+      "entryPoints": [
+        "bubble_babble.ts"
+      ]
+    }
+  },
   "bugs": {
     "url": "https://github.com/KeeeX/bubble_babble/issues"
   },
   "homepage": "https://github.com/KeeeX/bubble_babble",
   "devDependencies": {
+    "@babel/cli": "^7.22.5",
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.22.5",
     "@keeex/eslint-config": "^1.11.0",
+    "@keeex/tslib": "^1.12.6",
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.16.18",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "babel-plugin-import-redirect": "^1.1.1",
     "c8": "^8.0.0",
     "eslint": "^8.43.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-mocha": "^10.1.0",
-    "mocha": "^8.4.0"
+    "mocha": "^10.2.0",
+    "typedoc": "^0.24.8",
+    "typedoc-plugin-rename-defaults": "^0.6.5",
+    "typescript": "^5.1.3"
   }
 }

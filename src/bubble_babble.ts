@@ -1,3 +1,8 @@
+import {
+  DecodedTuple,
+  SupportedInput,
+} from "./types.js";
+
 const vowels = "aeiouy";
 const vowelsCount = vowels.length;
 const usedConsonants = "bcdfghklmnprstv";
@@ -8,14 +13,14 @@ const consonants = `${usedConsonants}${evenConsonant}${endsConsonant}`;
 const endIndex = 16;
 
 /** Get an Uint8Array representation from input */
-const getBuf8FromInput = input => {
+const getBuf8FromInput = (input: SupportedInput): Uint8Array => {
   if (input instanceof Uint8Array) return input;
   if (input instanceof ArrayBuffer) return new Uint8Array(input);
   if (typeof input === "string") return new TextEncoder().encode(input);
   throw new Error("Unsupported input");
 };
 
-const oddPartial = (rawByte, checksum) => {
+const oddPartial = (rawByte: number, checksum: number): string => {
   /* eslint-disable no-magic-numbers */
   const a = (((rawByte >> 6) & 3) + checksum) % vowelsCount;
   const b = (rawByte >> 2) & 15;
@@ -24,7 +29,7 @@ const oddPartial = (rawByte, checksum) => {
   return vowels[a] + consonants[b] + vowels[c];
 };
 
-const evenPartial = checksum => {
+const evenPartial = (checksum: number): string => {
   /* eslint-disable no-magic-numbers */
   const a = checksum % vowelsCount;
   const c = Math.floor(checksum / 6);
@@ -33,11 +38,15 @@ const evenPartial = checksum => {
 };
 
 /* eslint-disable no-magic-numbers */
-const nextChecksum = (checksum, byte1, byte2) => ((checksum * 5) + (byte1 * 7) + byte2) % 36;
+const nextChecksum = (
+  checksum: number,
+  byte1: number,
+  byte2: number,
+): number => ((checksum * 5) + (byte1 * 7) + byte2) % 36;
 /* eslint-enable no-magic-numbers */
 
 /** Encode a buffer/string into a bubble babble string */
-export const encode = input => {
+export const encode = (input: SupportedInput): string => {
   const inputBytes = getBuf8FromInput(input);
   const len = inputBytes.length;
   let result = endsConsonant;
@@ -68,7 +77,7 @@ export const encode = input => {
   return result;
 };
 
-const decodeTuple = asciiTuple => ([
+const decodeTuple = (asciiTuple: string): DecodedTuple => ([
   vowels.indexOf(asciiTuple[0]),
   consonants.indexOf(asciiTuple[1]),
   vowels.indexOf(asciiTuple[2]),
@@ -76,7 +85,12 @@ const decodeTuple = asciiTuple => ([
   consonants.indexOf(asciiTuple[5]),
 ]);
 
-const decode3PartByte = (a, b, c, checksum) => {
+const decode3PartByte = (
+  a: number,
+  b: number,
+  c: number,
+  checksum: number,
+): number => {
   /* eslint-disable no-magic-numbers */
   const high = (a - (checksum % 6) + 6) % 6;
   const mid = b;
@@ -87,15 +101,15 @@ const decode3PartByte = (a, b, c, checksum) => {
 };
 
 /* eslint-disable no-magic-numbers */
-const decode2PartByte = (d, e) => (d << 4) | e;
+const decode2PartByte = (d: number, e: number): number => (d << 4) | e;
 /* eslint-enable no-magic-numbers */
 
-export const decode = input => {
+export const decode = (input: string): ArrayBuffer => {
   if (input[0] !== endsConsonant || input.slice(-1) !== endsConsonant) {
     throw new Error("Corrupt string");
   }
   // eslint-disable-next-line require-unicode-regexp
-  const asciiTuples = input.slice(1, -1).match(/.{3,6}/g);
+  const asciiTuples = input.slice(1, -1).match(/.{3,6}/g) as Array<string>;
   const len = asciiTuples ? asciiTuples.length : 0;
   const charCodes = [];
   let checksum = 1;

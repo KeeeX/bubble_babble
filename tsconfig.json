@@ -1,0 +1,47 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "composite": false,
+    "tsBuildInfoFile": "./.tsbuildinfo",
+    "target": "es2022",
+    "module": "es2022",
+    "rootDir": "./src",
+    "moduleResolution": "node",
+    "declaration": true,
+    "declarationMap": false,
+    "emitDeclarationOnly": false,
+    "sourceMap": false,
+    "outDir": "./lib",
+    "removeComments": false,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "emitBOM": false,
+    "newLine": "lf",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipDefaultLibCheck": true,
+    "skipLibCheck": true,
+    "jsx": "react-native"
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx"
+  ],
+  "typedocOptions": {
+    "exclude": [
+      "./src/**/*.test.ts",
+      "./src/tests/**/*"
+    ],
+    "out": "apidoc",
+    "excludeInternal": true,
+    "excludePrivate": true,
+    "includeVersion": true,
+    "entryPoints": [
+      "bubble_babble.ts"
+    ],
+    "plugin": [
+      "typedoc-plugin-rename-defaults"
+    ]
+  }
+}

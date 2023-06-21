@@ -1,12 +1,18 @@
 /* eslint-disable no-magic-numbers */
 import assert from "node:assert";
-import {encode, decode} from "../bubble_babble.js";
+import {
+  encode,
+  decode,
+} from "./bubble_babble.js";
 
-const randomInt = (min, max) => Math.floor((Math.random() * (max - min + 1)) + min);
+const randomInt = (
+  min: number,
+  max: number,
+): number => Math.floor((Math.random() * (max - min + 1)) + min);
 
 const LARGEST_BASE = 36;
 
-const randomStr = () => {
+const randomStr = (): string => {
   const randomSrc = Math.random().toString(LARGEST_BASE);
   return randomSrc.slice(2, randomInt(0, randomSrc.length));
 };
@@ -26,8 +32,8 @@ const testVectors = [
   },
 ];
 
-const str2abUTF8 = str => new TextEncoder().encode(str).buffer;
-const ab2strUTF8 = ab => new TextDecoder().decode(new Uint8Array(ab));
+const str2abUTF8 = (str: string): ArrayBuffer => new TextEncoder().encode(str).buffer;
+const ab2strUTF8 = (ab: ArrayBuffer): string => new TextDecoder().decode(new Uint8Array(ab));
 
 const testEncode = () => {
   it("should encode a buffer", () => testVectors.forEach(fixture => {
@@ -65,6 +71,7 @@ const testDecode = () => {
   it("should throw exception on corrupt input", () => {
     assert.throws(() => decode("xesyf-disof-gytuf-katof-movif-baxux"));
     assert.throws(() => decode("xesef-disof-gytuf-katof-movif-baxu"));
+    assert.throws(() => decode("xesef-disof-gytuf-katof-movif-bexux"));
   });
 
   it("should be inverse of encoding a string", () => {
@@ -88,6 +95,7 @@ const testDecode = () => {
     const decodedBytes = new Uint8Array(decoded);
     for (let i = 0; i < decodedBytes.length; ++i) assert.strictEqual(decodedBytes[i], 255);
   });
+
 };
 
 describe("BubbleBabble", () => {

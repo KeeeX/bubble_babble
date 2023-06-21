@@ -5,7 +5,7 @@ module.exports = require("@keeex/eslint-config")({
   import: true,
   reacthooks: false,
   reactnative: false,
-  typescript: false,
+  typescript: "./tsconfig.json",
   tsdoc: false,
   deprecation: true,
   mocha: true,
