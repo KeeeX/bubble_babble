@@ -2,6 +2,7 @@
   "name": "@keeex/bubble_babble",
   "version": "2.0.0",
   "description": "Bubble Babble encoding",
+  "files": ["lib", "web"],
   "main": "lib/bubble_babble.js",
   "browser": "web/bubble_babble.js",
   "scripts": {
@@ -38,7 +39,8 @@
         {
           "type": "json",
           "package": true,
-          "remove": "repository"
+          "remove": ["repository", "bugs"],
+          "add": {"homepage": "https://oss.keeex.me/@keeex/bubble_babble"}
         }
       ],
       "README.md": {
