@@ -1,5 +1,6 @@
 import {
   DecodedTuple,
+  OutputFormat,
   SupportedInput,
 } from "./types.js";
 
@@ -105,7 +106,16 @@ const decode3PartByte = (
 const decode2PartByte = (d: number, e: number): number => (d << 4) | e;
 /* eslint-enable no-magic-numbers */
 
-export const decode = (input: string): ArrayBuffer => {
+interface DecodeOverload {
+  (input: string, output: OutputFormat.string): string;
+  (input: string, output?: OutputFormat.ArrayBuffer): ArrayBuffer;
+  (input: string, output: OutputFormat.Uint8Array): Uint8Array;
+}
+
+export const decode: DecodeOverload = (
+  input: string,
+  output: OutputFormat = OutputFormat.ArrayBuffer,
+): any => {
   if (input[0] !== endsConsonant || input.slice(-1) !== endsConsonant) {
     throw new Error("Corrupt string");
   }
@@ -138,5 +148,11 @@ export const decode = (input: string): ArrayBuffer => {
     charCodes.push(byte1);
   }
 
-  return Uint8Array.from(charCodes).buffer;
+  const buf8 = new Uint8Array(charCodes);
+  if (output === OutputFormat.string) return new TextDecoder().decode(buf8);
+  if (output === OutputFormat.ArrayBuffer) {
+    if (buf8.byteOffset === 0 && buf8.byteLength === buf8.buffer.byteLength) return buf8.buffer;
+    return buf8.buffer.slice(buf8.byteOffset, buf8.byteOffset + buf8.byteLength);
+  }
+  return buf8;
 };

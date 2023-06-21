@@ -4,6 +4,7 @@ import {
   encode,
   decode,
 } from "./bubble_babble.js";
+import {OutputFormat} from "./types.js";
 
 const randomInt = (
   min: number,
@@ -33,7 +34,8 @@ const testVectors = [
 ];
 
 const str2abUTF8 = (str: string): ArrayBuffer => new TextEncoder().encode(str).buffer;
-const ab2strUTF8 = (ab: ArrayBuffer): string => new TextDecoder().decode(new Uint8Array(ab));
+const buf82strUTF8 = (buf8: Uint8Array): string => new TextDecoder().decode(buf8);
+const ab2strUTF8 = (ab: ArrayBuffer): string => buf82strUTF8(new Uint8Array(ab));
 
 const testEncode = () => {
   it("should encode a buffer", () => testVectors.forEach(fixture => {
@@ -66,6 +68,19 @@ const testDecode = () => {
     assert(decoded instanceof ArrayBuffer);
     const ascii = ab2strUTF8(decoded);
     assert.deepStrictEqual(ascii, fixture.ascii);
+  }));
+
+  it("should return an Uint8Array after decode", () => testVectors.forEach(fixture => {
+    const decoded = decode(fixture.encoding, OutputFormat.Uint8Array);
+    assert(decoded instanceof Uint8Array);
+    const ascii = buf82strUTF8(decoded);
+    assert.deepStrictEqual(ascii, fixture.ascii);
+  }));
+
+  it("should return a string after decode", () => testVectors.forEach(fixture => {
+    const decoded = decode(fixture.encoding, OutputFormat.string);
+    assert(typeof decoded === "string");
+    assert.deepStrictEqual(decoded, fixture.ascii);
   }));
 
   it("should throw exception on corrupt input", () => {
