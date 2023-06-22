@@ -5,6 +5,10 @@ Bubble Babble encoding for nodejs.
 
 Initially forked from tylorr/bubble\_babble to avoid the dependency on `Buffer`.
 
+Notes:
+The package available on NPMJS named `@keeex/bubble_babble` was based on this repository but got
+more updates.
+This repository is now archived and will not receive anymore updates.
 
 **Install**
 -------
